@@ -174,6 +174,10 @@ class Pane extends JPanel {
 							temp.getY2()
 					);
 					
+					/*double[] res = Casteljau.GetPoint(points, 0.5);
+					System.out.printf("0 points: %s\n1 points: %.2f, %.2f\n",
+							points.toString(),
+							res[0], res[1]);*/
 					repaint();
 				}
 			}

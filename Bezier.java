@@ -44,6 +44,7 @@ class Pane extends JPanel {
 	private double dolzinaKrivulje = 0;
 	
 	private ArrayList<double[]> allCastelPoints;
+	int n = 10;
 
 	public Pane() {
 		this.addMouseListener(new MouseAdapter() {
@@ -101,7 +102,7 @@ class Pane extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				mouseDownOn = -1;
 				
-				int n = 100;
+				
 				
 				ArrayList<Point2D> allPoints = new ArrayList<Point2D>();
 				ArrayList<double[]> currCastelPoints = new ArrayList<double[]>();
@@ -116,21 +117,18 @@ class Pane extends JPanel {
 					allPoints.add(cubicCurve2D.getP2());
 					
 					for (int i = 0; i < n; i++) {
-						currCastelPoints.add(Casteljau.GetPoint(allPoints, ((double)i)/n));
+						currCastelPoints.add(Functions.GetPoint(allPoints, ((double)i)/n));
 					}
 					
 					allCastelPoints.addAll(currCastelPoints);
+					allPoints.clear();
 					currCastelPoints.clear();
 				}
 				
-				for (double[] ds : allCastelPoints) {
+				/*for (double[] ds : allCastelPoints) {
 					System.out.printf("%.2f, %.2f\n", ds[0], ds[1]);
-				}
+				}*/
 				repaint();
-				/*ArrayList 
-				System.out.printf("0 points: %s\n1 points: %.2f, %.2f\n",
-						points.toString(),
-						res[0], res[1]);*/
 			}
 		});
 		this.addMouseMotionListener(new MouseAdapter() {
@@ -243,9 +241,18 @@ class Pane extends JPanel {
 		
 		if(allCastelPoints != null){
 			g2.setColor(Color.red);
-			for (double[] ds : allCastelPoints) {
-				g.drawLine((int)ds[0], (int)ds[1], (int)ds[0], (int)ds[1]);
-			}	
+			double[] p1, p2;
+			for (int i = 0; i < allCastelPoints.size()-1; i++) {
+				p1 = allCastelPoints.get(i);
+				p2 = allCastelPoints.get(i+1);
+				g.drawLine((int)p1[0], (int)p1[1], (int)p2[0], (int)p2[1]);
+			}
+			
+			System.out.println("Dolzina krivulje: " + Functions.LengthOfCurve(allCastelPoints));
+			
+			ArrayList<double[]> kurac = Functions.SelfIntersections(allCastelPoints);
+			
+			Functions.PrintPoints(kurac);
 		}
 		
 	}

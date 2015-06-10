@@ -1,11 +1,11 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.BasicStroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -43,8 +43,10 @@ class Pane extends JPanel {
 	private int stSamoPresekov = 0;
 	private double dolzinaKrivulje = 0;
 	
-	private ArrayList<double[]> allCastelPoints;
-	int n = 10;
+	private List<double[]> allCastelPoints = new ArrayList<double[]>();
+	private List<double[]> intersections = new ArrayList<double[]>();
+
+	int n = 100;
 
 	public Pane() {
 		this.addMouseListener(new MouseAdapter() {
@@ -92,9 +94,7 @@ class Pane extends JPanel {
 					// Dodamo obe kontrolni tocki za slikanje
 					paintControlPoints.add(new Ellipse2D.Double(ctrlX1 - (POINTSIZE / 2), ctrlY1 - (POINTSIZE / 2), POINTSIZE, POINTSIZE));
 					paintControlPoints.add(new Ellipse2D.Double(ctrlX2 - (POINTSIZE / 2), ctrlY2 - (POINTSIZE / 2), POINTSIZE, POINTSIZE));
-					
 				}
-				
 				repaint();
 			}
 			
@@ -102,13 +102,9 @@ class Pane extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				mouseDownOn = -1;
 				
-				
-				
 				ArrayList<Point2D> allPoints = new ArrayList<Point2D>();
 				ArrayList<double[]> currCastelPoints = new ArrayList<double[]>();
-				allCastelPoints = new ArrayList<double[]>();
-				
-				
+				allCastelPoints = new ArrayList<double[]>();		
 				
 				for (CubicCurve2D cubicCurve2D : curves) {
 					allPoints.add(cubicCurve2D.getP1());
@@ -117,17 +113,18 @@ class Pane extends JPanel {
 					allPoints.add(cubicCurve2D.getP2());
 					
 					for (int i = 0; i < n; i++) {
-						currCastelPoints.add(Functions.GetPoint(allPoints, ((double)i)/n));
+						currCastelPoints.add(Functions.GetPoint(allPoints, (double) i / n));
 					}
 					
 					allCastelPoints.addAll(currCastelPoints);
 					allPoints.clear();
 					currCastelPoints.clear();
-				}
+				}	
 				
-				/*for (double[] ds : allCastelPoints) {
-					System.out.printf("%.2f, %.2f\n", ds[0], ds[1]);
-				}*/
+				dolzinaKrivulje = Functions.LengthOfCurve(allCastelPoints);
+				intersections = new ArrayList<double[]>(Functions.SelfIntersections(allCastelPoints));
+				stSamoPresekov = intersections.size();
+				
 				repaint();
 			}
 		});
@@ -205,20 +202,19 @@ class Pane extends JPanel {
 							temp.getX2(),
 							temp.getY2()
 					);
-					
 					repaint();
-					
 				}
 			}
 		});
 	}
 	
-
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setStroke(new BasicStroke(2));
 		
 		g2.setColor(Color.blue);
 		for(Point2D p: points) {
@@ -229,32 +225,32 @@ class Pane extends JPanel {
 			g2.setColor(Color.black);
 			g2.draw(c);
 			
-			g.setColor(Color.gray);
+			g.setColor(Color.lightGray);
 			g.drawLine((int) c.getX1(), (int) c.getY1(), (int) c.getCtrlX1(), (int) c.getCtrlY1());
 			g.drawLine((int) c.getX2(), (int) c.getY2(), (int) c.getCtrlX2(), (int) c.getCtrlY2());
 		}
 		
-		g2.setColor(Color.green);
+		g2.setColor(Color.red);
 		for(Ellipse2D e: paintControlPoints) {
 			g2.draw(e);
 		}
 		
-		if(allCastelPoints != null){
-			g2.setColor(Color.red);
-			double[] p1, p2;
-			for (int i = 0; i < allCastelPoints.size()-1; i++) {
-				p1 = allCastelPoints.get(i);
-				p2 = allCastelPoints.get(i+1);
-				g.drawLine((int)p1[0], (int)p1[1], (int)p2[0], (int)p2[1]);
-			}
-			
-			System.out.println("Dolzina krivulje: " + Functions.LengthOfCurve(allCastelPoints));
-			
-			ArrayList<double[]> kurac = Functions.SelfIntersections(allCastelPoints);
-			
-			Functions.PrintPoints(kurac);
-		}
+		g2.setStroke(new BasicStroke(1));
+		g2.setColor(Color.green);
 		
+		double[] p1, p2;
+		for (int i = 0; i < allCastelPoints.size()-1; i++) {
+			p1 = allCastelPoints.get(i);
+			p2 = allCastelPoints.get(i + 1);
+			g.drawLine((int) p1[0], (int) p1[1], (int) p2[0], (int) p2[1]);
+		}	
+
+		g2.setStroke(new BasicStroke(2));
+		g2.setColor(Color.magenta);
+
+		for(double[] i: intersections) {
+			g2.draw(new Ellipse2D.Double((int) i[0] - (POINTSIZE / 2), (int) i[1] - (POINTSIZE / 2), POINTSIZE, POINTSIZE));
+		}		
 	}
 
 
@@ -283,7 +279,5 @@ class Pane extends JPanel {
 		return "Dolzina krivulje: " + this.dolzinaKrivulje + "        " +
 				"Stevilo samopresecisc: " + this.stSamoPresekov;
 	}
-
-
 }
 

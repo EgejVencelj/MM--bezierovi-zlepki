@@ -102,7 +102,7 @@ class Pane extends JPanel {
 		this.addMouseMotionListener(new MouseAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				if(mouseDownOn > -1) {	
+				if(mouseDownOn > -1) {
 					// i nam pove ali spreminjamo prvo kontrolno tocko ali drugo
 					int i = mouseDownOn % 2;
 					CubicCurve2D temp = curves.get(mouseDownOn / 2);
@@ -116,62 +116,62 @@ class Pane extends JPanel {
 					if(temp1 != null) {
 						// Popravljamo 2. kontrolno pri prejsnji krivulji
 						if(i == 0) {
-							paintControlPoints.set(mouseDownOn - 1, 
-								new Ellipse2D.Double(
-									(2 * temp1.getX2() - e.getX()) - (POINTSIZE / 2), 
-									(2 * temp1.getY2() - e.getY()) - (POINTSIZE / 2), 
-									POINTSIZE, 
-									POINTSIZE)
+							paintControlPoints.set(mouseDownOn - 1,
+									new Ellipse2D.Double(
+											(2 * temp1.getX2() - e.getX()) - (POINTSIZE / 2),
+											(2 * temp1.getY2() - e.getY()) - (POINTSIZE / 2),
+											POINTSIZE,
+											POINTSIZE)
 							);
 							temp1.setCurve(
-								temp1.getX1(), 
-								temp1.getY1(), 
-								temp1.getCtrlX1(), 
-								temp1.getCtrlY1(), 
-								(2 * temp1.getX2() - e.getX()), 
-								(2 * temp1.getY2() - e.getY()), 
-								temp1.getX2(), 
-								temp1.getY2()
+									temp1.getX1(),
+									temp1.getY1(),
+									temp1.getCtrlX1(),
+									temp1.getCtrlY1(),
+									(2 * temp1.getX2() - e.getX()),
+									(2 * temp1.getY2() - e.getY()),
+									temp1.getX2(),
+									temp1.getY2()
 							);
 						} else {
 							// Popravljamo 1. kontrolno pri naslednji krivulji
-							paintControlPoints.set(mouseDownOn + 1, 
-								new Ellipse2D.Double(
-									(2 * temp1.getX1() - e.getX()) - (POINTSIZE / 2), 
-									(2 * temp1.getY1() - e.getY()) - (POINTSIZE / 2), 
-									POINTSIZE, 
-									POINTSIZE)
+							paintControlPoints.set(mouseDownOn + 1,
+									new Ellipse2D.Double(
+											(2 * temp1.getX1() - e.getX()) - (POINTSIZE / 2),
+											(2 * temp1.getY1() - e.getY()) - (POINTSIZE / 2),
+											POINTSIZE,
+											POINTSIZE)
 							);
 							temp1.setCurve(
-								temp1.getX1(), 
-								temp1.getY1(), 
-								(2 * temp1.getX1() - e.getX()), 
-								(2 * temp1.getY1() - e.getY()), 
-								temp1.getCtrlX2(), 
-								temp1.getCtrlY2(), 
-								temp1.getX2(), 
-								temp1.getY2()
+									temp1.getX1(),
+									temp1.getY1(),
+									(2 * temp1.getX1() - e.getX()),
+									(2 * temp1.getY1() - e.getY()),
+									temp1.getCtrlX2(),
+									temp1.getCtrlY2(),
+									temp1.getX2(),
+									temp1.getY2()
 							);
 						}
 					}
 					
 					// Izbrana tocka
 					paintControlPoints.set(mouseDownOn,
-						new Ellipse2D.Double(
-							e.getX() - (POINTSIZE / 2), 
-							e.getY() - (POINTSIZE / 2), 
-							POINTSIZE, 
-							POINTSIZE)
+							new Ellipse2D.Double(
+									e.getX() - (POINTSIZE / 2),
+									e.getY() - (POINTSIZE / 2),
+									POINTSIZE,
+									POINTSIZE)
 					);
 					temp.setCurve(
-						temp.getX1(), 
-						temp.getY1(), 
-						(i == 0 ? e.getX() : temp.getCtrlX1()), 
-						(i == 0 ? e.getY() : temp.getCtrlY1()), 
-						(i == 1 ? e.getX() : temp.getCtrlX2()), 
-						(i == 1 ? e.getY() : temp.getCtrlY2()), 
-						temp.getX2(), 
-						temp.getY2()
+							temp.getX1(),
+							temp.getY1(),
+							(i == 0 ? e.getX() : temp.getCtrlX1()),
+							(i == 0 ? e.getY() : temp.getCtrlY1()),
+							(i == 1 ? e.getX() : temp.getCtrlX2()),
+							(i == 1 ? e.getY() : temp.getCtrlY2()),
+							temp.getX2(),
+							temp.getY2()
 					);
 					
 					repaint();
@@ -230,8 +230,8 @@ class Pane extends JPanel {
 	@Override
 	public String toString() {
 		// todo
-		return "Dolžina krivulje: " + this.dolzinaKrivulje + "        " +
-				"Število samopresečišč: " + this.stSamoPresekov;
+		return "Dolzina krivulje: " + this.dolzinaKrivulje + "        " +
+				"Stevilo samopresecisc: " + this.stSamoPresekov;
 	}
 
 

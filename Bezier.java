@@ -17,16 +17,15 @@ public class Bezier {
 	}
 	
 	public Bezier() {
-		JFrame f = new JFrame("Bezierovi zlepki");
+		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(600, 480);
+		f.setSize(600, 600);
 		
-		Pane p = new Pane(); 
+		Pane p = new Pane();
 		
 		f.getContentPane().add(p);
 		f.setVisible(true);
 	}
-
 
 }
 
@@ -39,11 +38,14 @@ class Pane extends JPanel {
 	private List<Ellipse2D> paintControlPoints = new ArrayList<Ellipse2D>();
 	private List<CubicCurve2D> curves = new ArrayList<CubicCurve2D>();
 	private int mouseDownOn = -1;
-	
+
+	private int stSamoPresekov = 0;
+	private double dolzinaKrivulje = 0;
+
 	public Pane() {
 		this.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {	
+			public void mousePressed(MouseEvent e) {
 				x = e.getX();
 				y = e.getY();
 				
@@ -57,13 +59,14 @@ class Pane extends JPanel {
 					}
 					i++;
 				}
-							
+
 				// Dodajanje novih tock
 				points.add(new Point2D.Double(x, y));
 				
 				int pointsSize = points.size();
 				int curvesSize = curves.size();
 				
+
 				if(pointsSize > 1) {
 					Point2D prevPoint = points.get(pointsSize - 2);
 					CubicCurve2D prevCurve = null;
@@ -89,7 +92,7 @@ class Pane extends JPanel {
 				}
 				
 				repaint();
-			}	
+			}
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -173,22 +176,22 @@ class Pane extends JPanel {
 					
 					repaint();
 				}
-			}	
-		}); 
+			}
+		});
 	}
 	
-	 
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-	
+
 		Graphics2D g2 = (Graphics2D) g;
 		
 		g2.setColor(Color.blue);
 		for(Point2D p: points) {
 			g2.draw(new Ellipse2D.Double(p.getX() - (POINTSIZE / 2), p.getY() - (POINTSIZE / 2), POINTSIZE, POINTSIZE));
 		}
-			
+
 		for(CubicCurve2D c: curves) {
 			g2.setColor(Color.black);
 			g2.draw(c);
@@ -205,4 +208,32 @@ class Pane extends JPanel {
 	}
 }
 
-         
+	@Override
+	public void removeAll() {
+		super.removeAll();
+		points = new ArrayList<Point2D>();
+		paintControlPoints = new ArrayList<Ellipse2D>();
+		curves = new ArrayList<CubicCurve2D>();
+		mouseDownOn = -1;
+	}
+
+	@Override
+	public void updateUI() {
+		super.updateUI();
+	}
+
+	/**
+	 * Za izpisovanje dolzine loka krivulje.
+	 * Zelo grdo in neprefesionalno, ampak (glede na stisko s casom) deluje.
+	 * @return dolzina krivulje in stevilo samopresecisc
+	 */
+	@Override
+	public String toString() {
+		// todo
+		return "Dolžina krivulje: " + this.dolzinaKrivulje + "        " +
+				"Število samopresečišč: " + this.stSamoPresekov;
+	}
+
+
+}
+

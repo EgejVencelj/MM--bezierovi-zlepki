@@ -77,9 +77,9 @@ class Pane extends JPanel {
 					//System.out.println(x + " " + y + " - " + prevPoint.getX() + " " + prevPoint.getY());
 					
 					// Dodamo novo krivuljo https://www.particleincell.com/2012/bezier-splines/
-					double ctrlX2 = (x + prevPoint.getX()) * 0.5;//r.nextInt(30) + 5;
+					double ctrlX2 = (x + prevPoint.getX()) * 0.5;
 					double ctrlY2 = (y + prevPoint.getY()) * 0.5;
-					double ctrlX1 = (curvesSize > 0 ? (2 * prevCurve.getX2() - prevCurve.getCtrlX2()) : prevPoint.getX());
+					double ctrlX1 = (curvesSize > 0 ? (2 * prevCurve.getX2() - prevCurve.getCtrlX2()) : prevPoint.getX() + 10);
 					double ctrlY1 = (curvesSize > 0 ? (2 * prevCurve.getY2() - prevCurve.getCtrlY2()) : prevPoint.getY() + 30);
 					
 					CubicCurve2D c = new CubicCurve2D.Double(prevPoint.getX(), prevPoint.getY(), ctrlX1, ctrlY1, ctrlX2, ctrlY2, x, y);
@@ -108,7 +108,7 @@ class Pane extends JPanel {
 					CubicCurve2D temp = curves.get(mouseDownOn / 2);
 					CubicCurve2D temp1 = null;
 					
-					if((mouseDownOn / 2 - 1 > 0) && (mouseDownOn / 2 + 1) < curves.size()) {
+					if((mouseDownOn / 2 + (i == 0 ? -1 : 1) >= 0) && (mouseDownOn / 2 + (i == 0 ? -1 : 1) < curves.size())) {
 						temp1 = curves.get(mouseDownOn / 2 + (i == 0 ? -1 : 1));
 					}
 

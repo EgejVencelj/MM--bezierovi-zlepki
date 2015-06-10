@@ -21,4 +21,4 @@ public class Casteljau {
 		}
 		return Q.get(0);
 	}
-}          
+}

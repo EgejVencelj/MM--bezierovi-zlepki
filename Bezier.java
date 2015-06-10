@@ -1,5 +1,6 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.Graphics;
@@ -41,6 +42,8 @@ class Pane extends JPanel {
 
 	private int stSamoPresekov = 0;
 	private double dolzinaKrivulje = 0;
+	
+	private ArrayList<double[]> allCastelPoints;
 
 	public Pane() {
 		this.addMouseListener(new MouseAdapter() {
@@ -97,6 +100,37 @@ class Pane extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				mouseDownOn = -1;
+				
+				int n = 100;
+				
+				ArrayList<Point2D> allPoints = new ArrayList<Point2D>();
+				ArrayList<double[]> currCastelPoints = new ArrayList<double[]>();
+				allCastelPoints = new ArrayList<double[]>();
+				
+				
+				
+				for (CubicCurve2D cubicCurve2D : curves) {
+					allPoints.add(cubicCurve2D.getP1());
+					allPoints.add(cubicCurve2D.getCtrlP1());
+					allPoints.add(cubicCurve2D.getCtrlP2());
+					allPoints.add(cubicCurve2D.getP2());
+					
+					for (int i = 0; i < n; i++) {
+						currCastelPoints.add(Casteljau.GetPoint(allPoints, ((double)i)/n));
+					}
+					
+					allCastelPoints.addAll(currCastelPoints);
+					currCastelPoints.clear();
+				}
+				
+				for (double[] ds : allCastelPoints) {
+					System.out.printf("%.2f, %.2f\n", ds[0], ds[1]);
+				}
+				repaint();
+				/*ArrayList 
+				System.out.printf("0 points: %s\n1 points: %.2f, %.2f\n",
+						points.toString(),
+						res[0], res[1]);*/
 			}
 		});
 		this.addMouseMotionListener(new MouseAdapter() {
@@ -174,11 +208,8 @@ class Pane extends JPanel {
 							temp.getY2()
 					);
 					
-					/*double[] res = Casteljau.GetPoint(points, 0.5);
-					System.out.printf("0 points: %s\n1 points: %.2f, %.2f\n",
-							points.toString(),
-							res[0], res[1]);*/
 					repaint();
+					
 				}
 			}
 		});
@@ -205,10 +236,18 @@ class Pane extends JPanel {
 			g.drawLine((int) c.getX2(), (int) c.getY2(), (int) c.getCtrlX2(), (int) c.getCtrlY2());
 		}
 		
-		g2.setColor(Color.red);
+		g2.setColor(Color.green);
 		for(Ellipse2D e: paintControlPoints) {
 			g2.draw(e);
 		}
+		
+		if(allCastelPoints != null){
+			g2.setColor(Color.red);
+			for (double[] ds : allCastelPoints) {
+				g.drawLine((int)ds[0], (int)ds[1], (int)ds[0], (int)ds[1]);
+			}	
+		}
+		
 	}
 
 

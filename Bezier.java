@@ -206,7 +206,7 @@ class Pane extends JPanel {
 			g2.draw(e);
 		}
 	}
-}
+
 
 	@Override
 	public void removeAll() {

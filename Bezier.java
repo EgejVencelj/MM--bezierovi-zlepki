@@ -83,10 +83,10 @@ class Pane extends JPanel {
 					//System.out.println(x + " " + y + " - " + prevPoint.getX() + " " + prevPoint.getY());
 					
 					// Dodamo novo krivuljo https://www.particleincell.com/2012/bezier-splines/
-					double ctrlX2 = (x + prevPoint.getX()) * 0.5;
-					double ctrlY2 = (y + prevPoint.getY()) * 0.5;
 					double ctrlX1 = (curvesSize > 0 ? (2 * prevCurve.getX2() - prevCurve.getCtrlX2()) : prevPoint.getX() + 10);
 					double ctrlY1 = (curvesSize > 0 ? (2 * prevCurve.getY2() - prevCurve.getCtrlY2()) : prevPoint.getY() + 30);
+					double ctrlX2 =	(ctrlX1 + x) * 0.5;
+					double ctrlY2 = (ctrlY1 + y) * 0.5;
 					
 					CubicCurve2D c = new CubicCurve2D.Double(prevPoint.getX(), prevPoint.getY(), ctrlX1, ctrlY1, ctrlX2, ctrlY2, x, y);
 					curves.add(c);
@@ -259,8 +259,9 @@ class Pane extends JPanel {
 		super.removeAll();
 		points = new ArrayList<Point2D>();
 		paintControlPoints = new ArrayList<Ellipse2D>();
-		curves = new ArrayList<CubicCurve2D>();
-		mouseDownOn = -1;
+		curves = new ArrayList<CubicCurve2D>();	
+		allCastelPoints = new ArrayList<double[]>();
+		intersections = new ArrayList<double[]>();
 	}
 
 	@Override

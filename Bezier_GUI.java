@@ -35,8 +35,8 @@ public class Bezier_GUI extends javax.swing.JFrame {
 		getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
 		jPanelMain.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				jPanelMainMouseClicked(evt);
+			public void mouseReleased(java.awt.event.MouseEvent evt) {
+				jPanelMainMouseReleased(evt);
 			}
 		});
 
@@ -53,7 +53,7 @@ public class Bezier_GUI extends javax.swing.JFrame {
 
 		getContentPane().add(jPanelMain);
 
-		jLabelStatus.setText("Dolžina krivulje:");
+		jLabelStatus.setText("Dolzina krivulje:");
 		getContentPane().add(jLabelStatus);
 
 		jMenuFile.setText("File");
@@ -94,22 +94,22 @@ public class Bezier_GUI extends javax.swing.JFrame {
 		pack();
 	}// </editor-fold>
 
+	private void jPanelMainMouseReleased(java.awt.event.MouseEvent evt) {
+		jLabelStatus.setText(jPanelMain.toString());
+	}
+
 	private void resetPane(java.awt.event.ActionEvent evt) {
 		jPanelMain.removeAll();
 		jPanelMain.updateUI();
-		jLabelStatus.setText("Dolžina krivulje: ");
+		jLabelStatus.setText("Dolzina krivulje: ");
 	}
 
-	private void exit(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exit
+	private void exit(java.awt.event.ActionEvent evt) {
 		System.exit(0);
 	}
 
 	private void about(java.awt.event.ActionEvent evt) {
 		// todo
-	}
-
-	private void jPanelMainMouseClicked(java.awt.event.MouseEvent evt) {
-		jLabelStatus.setText(jPanelMain.toString());
 	}
 
 	/**

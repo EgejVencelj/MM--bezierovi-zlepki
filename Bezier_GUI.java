@@ -53,7 +53,6 @@ public class Bezier_GUI extends javax.swing.JFrame {
 
 		getContentPane().add(jPanelMain);
 
-		jLabelStatus.setText("Dolžina krivulje:");
 		getContentPane().add(jLabelStatus);
 
 		jMenuFile.setText("File");
@@ -97,7 +96,6 @@ public class Bezier_GUI extends javax.swing.JFrame {
 	private void resetPane(java.awt.event.ActionEvent evt) {
 		jPanelMain.removeAll();
 		jPanelMain.updateUI();
-		jLabelStatus.setText("Dolžina krivulje: ");
 	}
 
 	private void exit(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exit

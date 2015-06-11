@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  *
  * @author Jure Jesensek
@@ -9,6 +11,8 @@ public class Bezier_GUI extends javax.swing.JFrame {
 	 */
 	public Bezier_GUI() {
 		initComponents();
+		Font oldFont = jLabelStatus.getFont();
+		jLabelStatus.setFont(new Font(oldFont.getName() + "new", oldFont.getStyle(), (int) (oldFont.getSize() * 1.5)));
 	}
 
 	/**
